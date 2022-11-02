@@ -57,21 +57,6 @@ $example_persons_array = [
         ],
     ];
 
-//массив для определения соотношения мужчин и женщин
-$arryGender = [
-        'Иванов Иван Иванович',
-        'Степанова Наталья Степановна',
-        'Пащенко Владимир Александрович',
-        'Громов Александр Иванович',
-        'Славин Семён Сергеевич',
-        'Цой Владимир Антонович',
-        'Быстрая Юлия Сергеевна',
-        'Шматко Антонина Сергеевна',
-        'аль-Хорезми Мухаммад ибн-Муса',
-        'Бардо Жаклин Фёдоровна',
-        'Шварцнегер Арнольд Густавович',
-    ];
-
 //Разбиение и объединение ФИО
 function getFullnameFromParts ($surname, $name, $patronymic) { //function объединения ФИО
 return $fullName =  $surname . ' ' . $name . ' ' . $patronymic;
@@ -153,15 +138,15 @@ function getGenderDescription ($arryPeople) {
 $countPeople = count($arryPeople);// считаем людей в массиве
 
 $countMen = array_filter($arryPeople, function($value) { // отбираем мужчин
-return  getGenderFromName ($value)  == 'ваш пол - мужской';
+return  getGenderFromName ($value['fullname'])  == 'ваш пол - мужской';
 });
 
 $countWomen = array_filter($arryPeople, function($value) { // отбираем женщин
-return  getGenderFromName ($value)  == 'ваш пол - женский';
+return  getGenderFromName ($value['fullname'])  == 'ваш пол - женский';
 });
 
 $countAverage = array_filter($arryPeople, function($value) { // отбираем не определенных 
-return  getGenderFromName ($value)  == 'ваш пол - не определен!';
+return  getGenderFromName ($value['fullname'])  == 'ваш пол - не определен!';
 });
 
 // считаем всех в своих группах
@@ -190,7 +175,7 @@ echo "Не удалось определить - $procAnv % ";
 echo '<br>';
 };
 
-getGenderDescription ($arryGender);
+getGenderDescription ($example_persons_array);
 echo '<br>';
 echo '<br>';
 
@@ -202,8 +187,8 @@ $lowerReg = mb_strtolower($vvod); // выравниваем регистр
 $correctRegistr = mb_convert_case($lowerReg, MB_CASE_TITLE);
 
 $youGend = getGenderFromName($correctRegistr); // определение пола вводного участника
-$randomGender = (array_rand($arry, 1));
-$perfectСouple = $arry[$randomGender]; // выбор идеальной пары
+$randomGender = $arry[rand(0,10)]['fullname'];
+$perfectСouple = $randomGender; // выбор идеальной пары
 $perfectСoupleGender = getGenderFromName($perfectСouple); // определение пола подбираемой пары
 
 $randomPercent =  rand (5000, 10000)/100; // процент совместимости
@@ -218,7 +203,7 @@ if ($youGend !== $perfectСoupleGender) {  // выводим инфорцаию,
     getPerfectPartner ($surname,$name,$patronymic,$arry);  // выполняем второй круг, если пара не подходит
 }}
 
-getPerfectPartner ('гАврИлова','надежда','МИХАЙЛОвна',$arryGender);
+getPerfectPartner ('гАврИлова','надежда','МИХАЙЛОвна',$example_persons_array);
 
 ?>
 </body>
